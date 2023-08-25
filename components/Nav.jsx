@@ -6,7 +6,8 @@ import { signIn, signOut, useSession, getProviders } from "next-auth/react";
 import React from "react";
 
 const Nav = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+  const statuss = "loading";
 
   const [providers, setProviders] = React.useState(null);
   const [toggleDropdown, setToggleDropdown] = React.useState(false);
@@ -36,7 +37,22 @@ const Nav = () => {
 
       {/* {Desktop Navigation} */}
       <div className="sm:flex hidden">
-        {session?.user ? (
+        {status === "loading" ? (
+          <div className="flex gap-3 md:gap-5">
+            <button
+              type="button"
+              className="w-full loading_btn animate-pulse"
+            ></button>
+            <button
+              type="button"
+              className="w-full loading_btn animate-pulse"
+            ></button>
+            <button
+              type="button"
+              className="loading_circle_btn animate-pulse"
+            ></button>
+          </div>
+        ) : session?.user ? (
           <div className="flex gap-3 md:gap-5">
             <Link href="/create-prompt" className="black_btn">
               Create Post
@@ -49,8 +65,8 @@ const Nav = () => {
             <Link href="/profile">
               <Image
                 src={session?.user.image}
-                width={37}
-                height={37}
+                width={36}
+                height={36}
                 className="rounded-full"
                 alt="profile"
               />
